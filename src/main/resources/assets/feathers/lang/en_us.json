@@ -1,0 +1,32 @@
+{
+	"effect.feathers.endurance": "Endurance",
+	"item.minecraft.potion.effect.endurance_potion": "Potion of Endurance",
+	"item.minecraft.splash_potion.effect.endurance_potion": "Splash Potion of Endurance",
+	"item.minecraft.lingering_potion.effect.endurance_potion": "Lingering Potion of Endurance",
+	
+	"item.minecraft.potion.effect.long_endurance_potion": "Potion of Endurance",
+	"item.minecraft.splash_potion.effect.long_endurance_potion": "Splash Potion of Endurance",
+	"item.minecraft.lingering_potion.effect.long_endurance_potion": "Lingering Potion of Endurance",
+	
+	"item.minecraft.potion.effect.strong_endurance_potion": "Potion of Endurance",
+	"item.minecraft.splash_potion.effect.strong_endurance_potion": "Splash Potion of Endurance",
+	"item.minecraft.lingering_potion.effect.strong_endurance_potion": "Lingering Potion of Endurance",
+	
+	"effect.feathers.cold": "Cold",
+	"item.minecraft.potion.effect.cold_potion": "Potion of Coldness",
+	"item.minecraft.splash_potion.effect.cold_potion": "Splash Potion of Coldness",
+	"item.minecraft.lingering_potion.effect.cold_potion": "Lingering Potion of Coldness",
+	
+	"effect.feathers.energized": "Energized",
+	"item.minecraft.potion.effect.energized_potion": "Potion of Energy",
+	"item.minecraft.splash_potion.effect.energized_potion": "Splash Potion of Energy",
+	"item.minecraft.lingering_potion.effect.energized_potion": "Lingering Potion of Energy",
+	
+	"item.minecraft.potion.effect.strong_energized_potion": "Potion of Energy",
+	"item.minecraft.splash_potion.effect.strong_energized_potion": "Splash Potion of Energy",
+	"item.minecraft.lingering_potion.effect.strong_energized_potion": "Lingering Potion of Energy",
+	
+	"item.minecraft.potion.effect.long_energized_potion": "Potion of Energy",
+	"item.minecraft.splash_potion.effect.long_energized_potion": "Splash Potion of Energy",
+	"item.minecraft.lingering_potion.effect.long_energized_potion": "Lingering Potion of Energy"
+}

@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[43,)"
+license="All rights reserved"
+[[mods]]
+modId="feathers"
+version="${file.jarVersion}"
+displayName="Feathers"
+logoFile="feathers.png"
+credits="Thanks for everyone who has supported me!"
+authors="Elenai"
+description='''
+Feathers is a stamina system for Minecraft, it adds a set of blue feathers to the hotbar to be spent by other mods, as well as an armor weight system to the game.
+'''
+[[dependencies.feathers]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[43,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+# Here's another dependency
+[[dependencies.feathers]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.19.2,1.20)"
+    ordering="NONE"
+    side="BOTH"

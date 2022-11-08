@@ -1,0 +1,19 @@
+{
+    "providers": [
+        {
+            "type": "space",
+            "advances": {
+                " ":-1
+            }
+        },
+        {
+            "type": "bitmap",
+            "file": "feathers:font/feathers.png",
+            "ascent": 7,
+            "height": 9,
+            "chars": [
+                "\u0061\u0062"
+            ]
+        }
+    ]
+}
