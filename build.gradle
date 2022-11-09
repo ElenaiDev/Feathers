@@ -6,7 +6,7 @@ plugins {
 
 version = '1.0'
 group = 'com.elenai.feathers'
-archivesBaseName = 'feathers-1.19.2'
+archivesBaseName = 'feathers'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
