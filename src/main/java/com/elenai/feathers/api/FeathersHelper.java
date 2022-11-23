@@ -4,6 +4,7 @@ import com.elenai.feathers.Feathers;
 import com.elenai.feathers.capability.PlayerFeathersProvider;
 import com.elenai.feathers.client.ClientFeathersData;
 import com.elenai.feathers.config.FeathersCommonConfig;
+import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.networking.packet.ColdSyncSTCPacket;
 import com.elenai.feathers.networking.packet.FeatherSyncCTSPacket;
@@ -13,6 +14,7 @@ import com.elenai.feathers.util.ArmorHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -191,10 +193,10 @@ public class FeathersHelper {
 	 * @param item The armor who's weight you wish to get
 	 * @return the armor's weight
 	 */
-	public static int getArmorWeight(ItemStack item) {
-		if (item.getItem() instanceof ArmorItem armor) {
-			return ArmorHandler.getArmorWeight(armor);
-		} else if (item.getItem() == Items.AIR) {
+	public static int getArmorWeight(Item item, int lightweightLevel) {
+		if (item instanceof ArmorItem armor) { //TODO: this
+			return Math.max(ArmorHandler.getArmorWeight(armor) - lightweightLevel, 0);
+		} else if (item == Items.AIR) {
 			return 0;
 		}
 		Feathers.logger.warn("Attempted to calculate weight of non armor item: " + item.getDescriptionId());
@@ -214,9 +216,9 @@ public class FeathersHelper {
 		
 		int weight = 0;
 		for (ItemStack i : player.getArmorSlots()) {
-			weight += getArmorWeight(new ItemStack(i.getItem()));
+			weight += getArmorWeight(i.getItem(), 0); // Set as 0 as we work this out on the server as shown below.
 		}
-		return weight;
+		return weight - ArmorHandler.getTotalEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), player);
 	}
 	
 	/**

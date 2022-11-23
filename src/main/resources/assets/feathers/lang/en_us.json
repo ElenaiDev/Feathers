@@ -29,6 +29,8 @@
 	"item.minecraft.potion.effect.long_energized_potion": "Potion of Energy",
 	"item.minecraft.splash_potion.effect.long_energized_potion": "Splash Potion of Energy",
 	"item.minecraft.lingering_potion.effect.long_energized_potion": "Lingering Potion of Energy",
+	
+	"enchantment.feathers.lightweight": "Lightweight",
 
 	"text.feathers.tooltip": "+%s Weight"
 }

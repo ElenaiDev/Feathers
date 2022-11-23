@@ -6,8 +6,10 @@ import com.elenai.feathers.Feathers;
 import com.elenai.feathers.client.ClientFeathersData;
 import com.elenai.feathers.client.gui.FeathersHudOverlay;
 import com.elenai.feathers.config.FeathersClientConfig;
+import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.networking.packet.RequestWeightCTSPacket;
+import com.elenai.feathers.util.ArmorHandler;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -62,7 +64,8 @@ public class ClientEvents {
 					&& FeathersClientConfig.DISPLAY_WEIGHTS.get()) { // Surprisingly easy way to render feathers using
 																		// fonts
 
-				FeathersMessages.sendToServer(new RequestWeightCTSPacket(Item.getId(event.getItemStack().getItem())));
+				FeathersMessages.sendToServer(new RequestWeightCTSPacket(Item.getId(event.getItemStack().getItem()),
+						ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), event.getItemStack())));
 				if (currentWeight > 0) {
 					StringBuilder s = new StringBuilder("");
 					List<Component> tooltip = event.getToolTip();

@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.elenai.feathers.config.FeathersClientConfig;
 import com.elenai.feathers.config.FeathersCommonConfig;
 import com.elenai.feathers.effect.FeathersEffects;
+import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.potion.FeathersPotions;
 
@@ -31,6 +32,7 @@ public class Feathers {
 		
 		FeathersEffects.register(modEventBus);
 		FeathersPotions.register(modEventBus);
+		FeathersEnchantments.register(modEventBus);
 		MinecraftForge.EVENT_BUS.register(this);
 
 	}
