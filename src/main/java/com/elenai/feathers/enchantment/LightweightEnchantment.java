@@ -19,6 +19,6 @@ public class LightweightEnchantment extends Enchantment {
 	
 	@Override
 	public boolean isTreasureOnly() {
-		return FeathersCommonConfig.ENABLE_LIGHTWEIGHT_ENCHANTMENT.get();
+		return !FeathersCommonConfig.ENABLE_LIGHTWEIGHT_ENCHANTMENT.get();
 	}
 }
