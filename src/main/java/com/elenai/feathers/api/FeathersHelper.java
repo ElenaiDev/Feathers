@@ -186,8 +186,10 @@ public class FeathersHelper {
 	}
 
 	/**
-	 * Gets the weight of the given armor item stack, if the item has a weight in
+	 * Gets the weight of the given armor item, minus the input lightweight level, if the item has a weight in
 	 * the config, returns that value, if not it returns the item's defence rating
+	 * 
+	 * This method is for use when sending items as packets to the server
 	 * 
 	 * @side server
 	 * @param item The armor who's weight you wish to get
@@ -202,6 +204,24 @@ public class FeathersHelper {
 		Feathers.logger.warn("Attempted to calculate weight of non armor item: " + item.getDescriptionId());
 		return 0;
 	}
+	
+	/**
+	 * Gets the weight of the given armor item stack, if the item has a weight in
+	 * the config, returns that value, if not it returns the item's defence rating
+	 * 
+	 * @side server
+	 * @param item The armor who's weight you wish to get
+	 * @return the armor's weight
+	 */
+	public static int getArmorWeightByStack(ItemStack itemStack) {
+		if (itemStack.getItem() instanceof ArmorItem armor) { //TODO: this
+			return Math.max(ArmorHandler.getArmorWeight(armor) - ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), itemStack), 0);
+		} else if (itemStack.getItem() == Items.AIR) {
+			return 0;
+		}
+		Feathers.logger.warn("Attempted to calculate weight of non armor item: " + itemStack.getDescriptionId());
+		return 0;
+	}
 
 	/**
 	 * Gets the total weight of the inputed player based on the armor they are wearing
@@ -213,12 +233,11 @@ public class FeathersHelper {
 		if(!FeathersCommonConfig.ENABLE_ARMOR_WEIGHTS.get()) {
 			return 0;
 		}
-		
 		int weight = 0;
 		for (ItemStack i : player.getArmorSlots()) {
-			weight += getArmorWeight(i.getItem(), 0); // Set as 0 as we work this out on the server as shown below.
+			weight += getArmorWeightByStack(i);
 		}
-		return weight - ArmorHandler.getTotalEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), player);
+		return weight;
 	}
 	
 	/**
