@@ -19,7 +19,7 @@ repositories {
 And this to your project's dependencies.
 ```gradle
 dependencies {
-	compile fg.deobf("curse.maven:feathers-699933:FILE_VERSION") 
+	implementation fg.deobf("curse.maven:feathers-699933:FILE_VERSION") 
 }
 ```
 Where ```FILE_VERSION``` is the file ID of the version you want to use. You can find this by opening the URL of an Feathers file download and looking at the url. The numbers at the end are the file ID.
