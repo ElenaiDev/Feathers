@@ -27,16 +27,16 @@ public class FeathersHudOverlay {
 	 * Renders the Feathers to the hotbar
 	 */
 	public static final IGuiOverlay FEATHERS = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
-		
+
 		int xOffset = FeathersClientConfig.X_OFFSET.get();
 		int yOffset = FeathersClientConfig.Y_OFFSET.get();
 		Minecraft minecraft = Minecraft.getInstance();
 		LocalPlayer player = minecraft.player;
-		int bubbleOffset = ((player == null || player.getAirSupply() <= 0 || player.getAirSupply() >= 300) ? 0 : 10);
-		// Moves the feathers when bubbles appear ^
 
 		int x = screenWidth / 2;
 		int y = screenHeight;
+
+		int rightOffset = FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get() ? gui.rightHeight : 0;
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -50,8 +50,8 @@ public class FeathersHudOverlay {
 			for (int i = 0; i < 10; i++) {
 				int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
 				int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-				GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - 49 - bubbleOffset - height + yOffset, NONE, cold, 9, 9, 256,
-						256);
+				GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset, NONE,
+						cold, 9, 9, 256, 256);
 			}
 
 			/**
@@ -67,33 +67,10 @@ public class FeathersHudOverlay {
 					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
 
 					int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - 49 - bubbleOffset - height + yOffset, type, cold, 9, 9,
-							256, 256);
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + yOffset,
+							type, cold, 9, 9, 256, 256);
 				} else {
 					break;
-				}
-			}
-
-			/**
-			 * Only render the currently active endurance feathers by line
-			 */
-			for (int i = 0; i < Math.ceil((double) ClientFeathersData.getEnduranceFeathers() / 20.0d); i++) { // Render
-																												// each
-																												// row
-				for (int j = 0; j < 10; j++) {
-					if ((((i) * 10.0d) + (j + 1) <= Math
-							.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d))
-							&& ClientFeathersData.getEnduranceFeathers() > 0) {
-						// Check if feather is half or full
-						int type = ((((i) * 20) + (j + 1) == Math
-								.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d)
-								&& (ClientFeathersData.getEnduranceFeathers() % 2 != 0)) ? HALF : FULL);
-
-						GuiComponent.blit(poseStack, x + 81 - (j * 8) + xOffset, y - 58 - bubbleOffset  + yOffset - ((i) * 10), type, 9, 9,
-								9, 256, 256);
-					} else {
-						break;
-					}
 				}
 			}
 
@@ -105,15 +82,15 @@ public class FeathersHudOverlay {
 						&& ClientFeathersData.getWeight() > 0
 						&& (i + 1 <= Math.ceil((double) ClientFeathersData.getFeathers() / 2.0d))) {
 					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-					
+
 					// Check if feather is half or full
 					int type = ((i + 1 == Math.ceil((double) ClientFeathersData.getWeight() / 2.0d)
 							&& (ClientFeathersData.getWeight() % 2 != 0)) ? HALF_ARMORED : ARMORED);
 
 					int lowerFeathers = (i >= Math.floor((double) ClientFeathersData.getFeathers() / 2.0d)) ? 9 : 0;
 
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - 49 - bubbleOffset - height + yOffset, type, lowerFeathers, 9, 9,
-							256, 256);
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+							type, lowerFeathers, 9, 9, 256, 256);
 				} else {
 					break;
 				}
@@ -126,10 +103,11 @@ public class FeathersHudOverlay {
 				if (ClientFeathersData.getAnimationCooldown() >= 18
 						|| ClientFeathersData.getAnimationCooldown() == 10) {
 					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - 49 - bubbleOffset - height + yOffset, NONE, 9, 9, 9, 256, 256);
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+							NONE, 9, 9, 9, 256, 256);
 				}
 			}
-			
+
 			if (ClientFeathersData.isEnergized()) {
 				if (k == 100) {
 					k = -40;
@@ -140,7 +118,37 @@ public class FeathersHudOverlay {
 				k = 0;
 			}
 		}
+		
+		if(FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get()) {
+			rightOffset += 10;
+		}
+		
+		int lines = 0;
+		
+		/**
+		 * Only render the currently active endurance feathers by line
+		 */
+		for (int i = 0; i < Math.ceil((double) ClientFeathersData.getEnduranceFeathers() / 20.0d); i++) { //TODO: fix half feathers
+			lines += 10;
+			for (int j = 0; j < 10; j++) {
+				if ((((i) * 10.0d) + (j + 1) <= Math
+						.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d))
+						&& ClientFeathersData.getEnduranceFeathers() > 0) {
+					// Check if feather is half or full
+					int type = ((((i) * 20) + (j + 1) == Math
+							.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d)
+							&& (ClientFeathersData.getEnduranceFeathers() % 2 != 0)) ? HALF : FULL);
 
+					GuiComponent.blit(poseStack, x + 81 - (j * 8) + xOffset,
+							y /*- 58*/ - rightOffset + yOffset - ((i) * 10), type, 9, 9, 9, 256, 256);
+				} else {
+					break;
+				}
+			}
+		}
+		if(FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get()) {
+			gui.rightHeight += 10 + lines;
+		}
 	});
 
 }

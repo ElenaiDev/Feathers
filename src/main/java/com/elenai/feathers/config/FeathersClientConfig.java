@@ -10,6 +10,7 @@ public class FeathersClientConfig {
 	public static final ForgeConfigSpec.ConfigValue<Boolean> FROST_SOUND;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_WEIGHTS;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> VISUAL_WEIGHTS;
+	public static final ForgeConfigSpec.ConfigValue<Boolean> EFFECTED_BY_RIGHT_HEIGHT;
 	
 	public static final ForgeConfigSpec.ConfigValue<Integer> X_OFFSET;
 	public static final ForgeConfigSpec.ConfigValue<Integer> Y_OFFSET;
@@ -28,6 +29,9 @@ public class FeathersClientConfig {
 		
 		VISUAL_WEIGHTS = BUILDER.comment("Whether armor weights are displayed as icons (true) or text (false) when hovering over an item")
 				.define("Display Weight As Icons", false);
+		
+		EFFECTED_BY_RIGHT_HEIGHT = BUILDER.comment("Whether armor weights are effected by icons on the right side of the HUD.")
+				.define("Weight Effected by Right Side Icons", true);
 		
 		X_OFFSET = BUILDER.comment("How far left or right you want the feathers to be")
 				.define("HUD X Offset", 0);

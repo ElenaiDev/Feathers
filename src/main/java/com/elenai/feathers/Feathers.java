@@ -35,6 +35,8 @@ public class Feathers {
 		FeathersEnchantments.register(modEventBus);
 		MinecraftForge.EVENT_BUS.register(this);
 
+		
+
 	}
 
 	private void commonSetup(FMLCommonSetupEvent event) {
