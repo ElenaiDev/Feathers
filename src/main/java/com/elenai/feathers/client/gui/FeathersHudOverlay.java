@@ -134,9 +134,9 @@ public class FeathersHudOverlay {
 				if ((((i) * 10.0d) + (j + 1) <= Math
 						.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d))
 						&& ClientFeathersData.getEnduranceFeathers() > 0) {
+				
 					// Check if feather is half or full
-					int type = ((((i) * 20) + (j + 1) == Math
-							.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d)
+					int type = (((j + 1) + (10 * i) == Math.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d)
 							&& (ClientFeathersData.getEnduranceFeathers() % 2 != 0)) ? HALF : FULL);
 
 					GuiComponent.blit(poseStack, x + 81 - (j * 8) + xOffset,

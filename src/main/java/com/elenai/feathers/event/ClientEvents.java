@@ -54,7 +54,7 @@ public class ClientEvents {
 						ClientFeathersData.setAnimationCooldown(18);
 					}
 					ClientFeathersData.setPreviousFeathers(ClientFeathersData.getFeathers());
-				}
+				}				
 			}
 		}
 

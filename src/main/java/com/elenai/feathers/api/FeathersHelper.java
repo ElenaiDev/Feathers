@@ -268,4 +268,14 @@ public class FeathersHelper {
 		});
 	}
 	
+	/**
+	 * Checks whether the player has any feathers remaining
+	 * 
+	 * @side client
+	 * @return Whether the player has feathers to spend
+	 */
+	public static boolean checkFeathersRemaining() {
+		return getFeathers() + getEndurance() > ClientFeathersData.getWeight();
+	}
+	
 }
