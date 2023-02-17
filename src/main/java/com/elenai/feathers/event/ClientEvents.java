@@ -12,6 +12,7 @@ import com.elenai.feathers.networking.packet.RequestWeightCTSPacket;
 import com.elenai.feathers.util.ArmorHandler;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -60,28 +61,30 @@ public class ClientEvents {
 
 		@SubscribeEvent
 		public static void tooltipRenderer(ItemTooltipEvent event) {
-			if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() instanceof ArmorItem
-					&& FeathersClientConfig.DISPLAY_WEIGHTS.get()) { // Surprisingly easy way to render feathers using
-																		// fonts
+			if (Minecraft.getInstance().level != null) {
+				if (!event.getItemStack().isEmpty() && event.getItemStack().getItem() instanceof ArmorItem
+						&& FeathersClientConfig.DISPLAY_WEIGHTS.get()) { // Surprisingly easy way to render feathers using
+					// fonts
 
-				FeathersMessages.sendToServer(new RequestWeightCTSPacket(Item.getId(event.getItemStack().getItem()),
-						ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), event.getItemStack())));
-				if (currentWeight > 0) {
-					StringBuilder s = new StringBuilder("");
-					List<Component> tooltip = event.getToolTip();
-					if (FeathersClientConfig.VISUAL_WEIGHTS.get()) {
-						for (int i = 2; i <= currentWeight + 1; i += 2) {
-							if (i - 1 == currentWeight) {
-								s.append("b");
-							} else {
-								s.append("a ");
+					FeathersMessages.sendToServer(new RequestWeightCTSPacket(Item.getId(event.getItemStack().getItem()),
+							ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), event.getItemStack())));
+					if (currentWeight > 0) {
+						StringBuilder s = new StringBuilder();
+						List<Component> tooltip = event.getToolTip();
+						if (FeathersClientConfig.VISUAL_WEIGHTS.get()) {
+							for (int i = 2; i <= currentWeight + 1; i += 2) {
+								if (i - 1 == currentWeight) {
+									s.append("b");
+								} else {
+									s.append("a ");
+								}
 							}
+							s.reverse();
+							tooltip.add(Component.literal(s.toString())
+									.withStyle(Style.EMPTY.withFont(new ResourceLocation(Feathers.MODID, "feather_font"))));
+						} else {
+							tooltip.add(Component.translatable("text.feathers.tooltip", currentWeight).withStyle(ChatFormatting.BLUE));
 						}
-						s.reverse();
-						tooltip.add(Component.literal(s.toString())
-								.withStyle(Style.EMPTY.withFont(new ResourceLocation(Feathers.MODID, "feather_font"))));
-					} else {
-						tooltip.add(Component.translatable("text.feathers.tooltip", currentWeight ).withStyle(ChatFormatting.BLUE));
 					}
 				}
 			}
