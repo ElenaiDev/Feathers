@@ -44,18 +44,20 @@ public class ClientEvents {
 		@SubscribeEvent
 		public static void clientTickEvents(ClientTickEvent event) {
 			if (event.phase == TickEvent.Phase.START) {
+				if (Minecraft.getInstance().level != null) {
 
-				if (ClientFeathersData.getAnimationCooldown() > 0) {// TODO: improve this animation
-					ClientFeathersData.setAnimationCooldown(ClientFeathersData.getAnimationCooldown() - 1);
-				}
-				
-				if (ClientFeathersData.getFeathers() != ClientFeathersData.getPreviousFeathers()) {
-					if (ClientFeathersData.getFeathers() > ClientFeathersData.getPreviousFeathers()
-							&& FeathersClientConfig.REGEN_EFFECT.get()) {
-						ClientFeathersData.setAnimationCooldown(18);
+					if (ClientFeathersData.getAnimationCooldown() > 0) {// TODO: improve this animation
+						ClientFeathersData.setAnimationCooldown(ClientFeathersData.getAnimationCooldown() - 1);
 					}
-					ClientFeathersData.setPreviousFeathers(ClientFeathersData.getFeathers());
-				}				
+
+					if (ClientFeathersData.getFeathers() != ClientFeathersData.getPreviousFeathers()) {
+						if (ClientFeathersData.getFeathers() > ClientFeathersData.getPreviousFeathers()
+								&& FeathersClientConfig.REGEN_EFFECT.get()) {
+							ClientFeathersData.setAnimationCooldown(18);
+						}
+						ClientFeathersData.setPreviousFeathers(ClientFeathersData.getFeathers());
+					}
+				}
 			}
 		}
 
