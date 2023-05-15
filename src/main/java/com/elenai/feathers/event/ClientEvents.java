@@ -57,6 +57,15 @@ public class ClientEvents {
 						}
 						ClientFeathersData.setPreviousFeathers(ClientFeathersData.getFeathers());
 					}
+
+					if (FeathersClientConfig.FADE_WHEN_FULL.get()) {
+						int cooldown = ClientFeathersData.getFadeCooldown();
+						if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()) {
+							if (cooldown < FeathersClientConfig.FADE_COOLDOWN.get()) {
+								ClientFeathersData.setFadeCooldown(ClientFeathersData.getFadeCooldown() + 1);
+							}
+						} else { ClientFeathersData.setFadeCooldown(0); }
+					}
 				}
 			}
 		}

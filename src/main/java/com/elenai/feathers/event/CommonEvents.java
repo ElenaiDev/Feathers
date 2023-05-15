@@ -2,6 +2,7 @@ package com.elenai.feathers.event;
 
 import com.elenai.feathers.Feathers;
 import com.elenai.feathers.api.FeathersHelper;
+import com.elenai.feathers.attributes.FeathersAttributes;
 import com.elenai.feathers.capability.PlayerFeathers;
 import com.elenai.feathers.capability.PlayerFeathersProvider;
 import com.elenai.feathers.config.FeathersCommonConfig;
@@ -30,7 +31,6 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = Feathers.MODID)
-
 public class CommonEvents {
 
 	@SubscribeEvent
@@ -39,7 +39,7 @@ public class CommonEvents {
 		if (!level.isClientSide && (event.getEntity() instanceof ServerPlayer player)) {
 			player.getCapability(PlayerFeathersProvider.PLAYER_FEATHERS).ifPresent(f -> {
 				FeathersMessages.sendToPlayer(
-						new FeatherSyncSTCPacket(f.getFeathers(), FeathersHelper.getPlayerWeight(player), f.getEnduranceFeathers()), player);
+						new FeatherSyncSTCPacket(f.getFeathers(), f.getMaxFeathers(), f.getRegen(), FeathersHelper.getPlayerWeight(player), f.getEnduranceFeathers()), player);
 				FeathersMessages.sendToPlayer(new ColdSyncSTCPacket(f.isCold()), player);
 				FeathersMessages.sendToPlayer(new EnergizedSyncSTCPacket(player.hasEffect(FeathersEffects.ENERGIZED.get())), player);
 			});
@@ -76,24 +76,29 @@ public class CommonEvents {
 	
 	/**
 	 * Regenerate the player's feathers, taking the energized potion into account
-	 * @param event
+	 * @param event Player Tick Event
 	 */
 	private static void regenerateFeathers(PlayerTickEvent event) {
 		event.player.getCapability(PlayerFeathersProvider.PLAYER_FEATHERS).ifPresent(f -> {
-			
-			if (f.getFeathers() < 20 && (!f.isCold())) {
-				
+			syncFeatherAttributes((ServerPlayer) event.player);
+			if (f.getFeathers() < f.getMaxFeathers() && (!f.isCold())) {
 				if(!event.player.hasEffect(FeathersEffects.ENERGIZED.get())) {
-					f.addCooldown(1);
+					f.addCooldown(f.getRegen());
 				} else {
-					f.addCooldown(Math.min(event.player.getActiveEffectsMap().get(FeathersEffects.ENERGIZED.get()).getAmplifier()+5, FeathersCommonConfig.REGEN_SPEED.get()));
+					f.addCooldown(event.player.getActiveEffectsMap().get(FeathersEffects.ENERGIZED.get()).getAmplifier()+1+f.getRegen());
 				}
-				
 			}
-			if (f.getCooldown() >= FeathersCommonConfig.REGEN_SPEED.get()) {
+			if (f.getCooldown() >= FeathersCommonConfig.COOLDOWN.get()) {
 				FeathersHelper.addFeathers((ServerPlayer) event.player, 1);
 			}
 		});
+	}
+
+	private static void syncFeatherAttributes(ServerPlayer player) {
+		int maxFeathers = (int) player.getAttributeValue(FeathersAttributes.MAX_FEATHERS.get());
+		int regen = (int) player.getAttributeValue(FeathersAttributes.FEATHER_REGEN.get());
+		FeathersHelper.setMaxFeathers(player, maxFeathers);
+		FeathersHelper.setFeatherRegen(player, regen);
 	}
 	
 	@SubscribeEvent
@@ -110,7 +115,7 @@ public class CommonEvents {
 		if (event.getEntity() instanceof ServerPlayer player && event.getSlot().getType() == EquipmentSlot.Type.ARMOR) {
 			player.getCapability(PlayerFeathersProvider.PLAYER_FEATHERS).ifPresent(f -> {
 				FeathersMessages.sendToPlayer(
-						new FeatherSyncSTCPacket(f.getFeathers(), FeathersHelper.getPlayerWeight(player), f.getEnduranceFeathers()), player);
+						new FeatherSyncSTCPacket(f.getFeathers(), f.getMaxFeathers(), f.getRegen(), FeathersHelper.getPlayerWeight(player), f.getEnduranceFeathers()), player);
 			});
 		}
 	}

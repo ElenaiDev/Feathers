@@ -22,12 +22,16 @@ public class FeathersHudOverlay {
 	public final static int HALF_ARMORED = 43;
 
 	public static int k = 0;
+	public static float alpha = 1.0f;
 
 	/**
 	 * Renders the Feathers to the hotbar
 	 */
 	public static final IGuiOverlay FEATHERS = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
 
+		int fadeCooldown = FeathersClientConfig.FADE_COOLDOWN.get();
+		int fadeIn = FeathersClientConfig.FADE_IN_COOLDOWN.get();
+		int fadeOut = FeathersClientConfig.FADE_OUT_COOLDOWN.get();
 		int xOffset = FeathersClientConfig.X_OFFSET.get();
 		int yOffset = FeathersClientConfig.Y_OFFSET.get();
 		Minecraft minecraft = Minecraft.getInstance();
@@ -36,25 +40,41 @@ public class FeathersHudOverlay {
 		int x = screenWidth / 2;
 		int y = screenHeight;
 
-		int rightOffset = FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get() ? gui.rightHeight : 0;
+		int rightOffset = FeathersClientConfig.AFFECTED_BY_RIGHT_HEIGHT.get() ? gui.rightHeight : 0;
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 		RenderSystem.setShaderTexture(0, ICONS);
 
 		if (!player.isSpectator() && !player.isCreative()) {
 
-			/**
-			 * Always render the background
-			 */
-			for (int i = 0; i < 10; i++) {
-				int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
-				int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-				GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset, NONE,
-						cold, 9, 9, 256, 256);
+			if (FeathersClientConfig.FADE_WHEN_FULL.get()) {
+				if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()) {
+					if (alpha != 0 & ClientFeathersData.getFadeCooldown() == fadeCooldown) {
+						alpha = Math.max((alpha - 1.0f / fadeOut), 0.0f);
+					}
+				} else {
+					if (alpha < 1.0f) {
+						alpha = Math.min((alpha + 1.0f / fadeIn), 1.0f);
+					}
+				}
 			}
 
-			/**
+			if (alpha == 0) return;
+
+			/*
+			 * Always render the background up to the maximum feather amount
+			 */
+			for (int i = 0; i < 10; i++) {
+				if ((i + 1 <= Math.ceil((double) ClientFeathersData.getMaxFeathers() / 2.0d))) {
+					int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
+					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset, NONE,
+							cold, 9, 9, 256, 256);
+				}
+			}
+
+			/*
 			 * Only render the currently active feathers
 			 */
 			for (int i = 0; i < 10; i++) {
@@ -74,7 +94,7 @@ public class FeathersHudOverlay {
 				}
 			}
 
-			/**
+			/*
 			 * Only render the currently worn armor
 			 */
 			for (int i = 0; i < 10; i++) {
@@ -96,15 +116,17 @@ public class FeathersHudOverlay {
 				}
 			}
 
-			/**
+			/*
 			 * Render the Regeneration effect
 			 */
 			for (int i = 0; i < 10; i++) {
 				if (ClientFeathersData.getAnimationCooldown() >= 18
 						|| ClientFeathersData.getAnimationCooldown() == 10) {
-					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
-							NONE, 9, 9, 9, 256, 256);
+					if ((i + 1 <= Math.ceil((double) ClientFeathersData.getMaxFeathers() / 2.0d))) {
+						int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
+						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+								NONE, 9, 9, 9, 256, 256);
+					}
 				}
 			}
 
@@ -118,14 +140,14 @@ public class FeathersHudOverlay {
 				k = 0;
 			}
 		}
-		
-		if(FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get()) {
+
+		if(FeathersClientConfig.AFFECTED_BY_RIGHT_HEIGHT.get()) {
 			rightOffset += 10;
 		}
-		
+
 		int lines = 0;
-		
-		/**
+
+		/*
 		 * Only render the currently active endurance feathers by line
 		 */
 		for (int i = 0; i < Math.ceil((double) ClientFeathersData.getEnduranceFeathers() / 20.0d); i++) { //TODO: fix half feathers
@@ -134,7 +156,7 @@ public class FeathersHudOverlay {
 				if ((((i) * 10.0d) + (j + 1) <= Math
 						.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d))
 						&& ClientFeathersData.getEnduranceFeathers() > 0) {
-				
+
 					// Check if feather is half or full
 					int type = (((j + 1) + (10 * i) == Math.ceil((double) ClientFeathersData.getEnduranceFeathers() / 2.0d)
 							&& (ClientFeathersData.getEnduranceFeathers() % 2 != 0)) ? HALF : FULL);
@@ -146,7 +168,7 @@ public class FeathersHudOverlay {
 				}
 			}
 		}
-		if(FeathersClientConfig.EFFECTED_BY_RIGHT_HEIGHT.get()) {
+		if(FeathersClientConfig.AFFECTED_BY_RIGHT_HEIGHT.get()) {
 			gui.rightHeight += 10 + lines;
 		}
 	});

@@ -7,13 +7,14 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerFeathers {
 
 	private int feathers = 20;
-	private final int MAX_FEATHERS = 20;
+	private int maxFeathers = 20;
+	private int cooldownReduction = 1;
 	private final int MIN_FEATHERS = 0;
 	
 	private int enduranceFeathers = 0;
 	
 	private int cooldown = 0;
-	private int maxCooldown = FeathersCommonConfig.REGEN_SPEED.get();
+	private int maxCooldown = FeathersCommonConfig.COOLDOWN.get();
 	private final int MIN_COOLDOWN = 0;
 	
 	private boolean cold = false;
@@ -26,8 +27,27 @@ public class PlayerFeathers {
 		this.feathers = feathers;
 	}
 
+	public int getMaxFeathers() {
+		return maxFeathers;
+	}
+
+	public void setMaxFeathers(int feathers) {
+		this.maxFeathers = feathers;
+		if (getFeathers() > feathers) {
+			setFeathers(feathers);
+		}
+	}
+
+	public int getRegen() {
+		return this.cooldownReduction;
+	}
+
+	public void setRegen(int ticks) {
+		this.cooldownReduction = ticks;
+	}
+
 	public void addFeathers(int feathers) {
-		this.feathers = Math.min(this.feathers + feathers, MAX_FEATHERS);
+		this.feathers = Math.min(this.feathers + feathers, maxFeathers);
 	}
 
 	public void subFeathers(int feathers) {
@@ -43,14 +63,18 @@ public class PlayerFeathers {
 
 	public void saveNBTData(CompoundTag nbt) {
 		nbt.putInt("feathers", this.feathers);
+		nbt.putInt("max_feathers", this.maxFeathers);
 		nbt.putInt("cooldown", this.cooldown);
+		nbt.putInt("cooldown_reduction", this.cooldownReduction);
 		nbt.putInt("endurance_feathers", this.enduranceFeathers);
 		nbt.putBoolean("cold", this.cold);
 	}
 
 	public void loadNBTData(CompoundTag nbt) {
 		this.feathers = nbt.getInt("feathers");
+		this.maxFeathers = nbt.getInt("max_feathers");
 		this.cooldown = nbt.getInt("cooldown");
+		this.cooldownReduction = nbt.getInt("cooldown_reduction");
 		this.enduranceFeathers = nbt.getInt("endurance_feathers");
 		this.cold = nbt.getBoolean("cold");
 	}

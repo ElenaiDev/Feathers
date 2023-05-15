@@ -1,4 +1,7 @@
 {
+	"feathers.max_feathers": "Max Feathers",
+	"feathers.feather_regen": "Feather Recovery",
+
 	"effect.feathers.endurance": "Endurance",
 	"item.minecraft.potion.effect.endurance_potion": "Potion of Endurance",
 	"item.minecraft.splash_potion.effect.endurance_potion": "Splash Potion of Endurance",
