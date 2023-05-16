@@ -3,6 +3,7 @@ package com.elenai.feathers.client.gui;
 import com.elenai.feathers.Feathers;
 import com.elenai.feathers.client.ClientFeathersData;
 import com.elenai.feathers.config.FeathersClientConfig;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,9 @@ public class FeathersHudOverlay {
 	public final static ResourceLocation ICONS = new ResourceLocation(Feathers.MODID, "textures/gui/icons.png");
 	public final static int NONE = 16;
 	public final static int FULL = 34;
+	public final static int FULL_FLOW = 70;
 	public final static int HALF = 25;
+	public final static int HALF_FLOW = 61;
 	public final static int ARMORED = 52;
 	public final static int HALF_ARMORED = 43;
 
@@ -28,6 +31,8 @@ public class FeathersHudOverlay {
 	 * Renders the Feathers to the hotbar
 	 */
 	public static final IGuiOverlay FEATHERS = ((gui, poseStack, partialTick, screenWidth, screenHeight) -> {
+
+		if (ClientFeathersData.getMaxFeathers() <= 0) return;
 
 		int fadeCooldown = FeathersClientConfig.FADE_COOLDOWN.get();
 		int fadeIn = FeathersClientConfig.FADE_IN_COOLDOWN.get();
@@ -43,6 +48,8 @@ public class FeathersHudOverlay {
 		int rightOffset = FeathersClientConfig.AFFECTED_BY_RIGHT_HEIGHT.get() ? gui.rightHeight : 0;
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		RenderSystem.enableBlend();
+		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
 		RenderSystem.setShaderTexture(0, ICONS);
 
@@ -50,17 +57,13 @@ public class FeathersHudOverlay {
 
 			if (FeathersClientConfig.FADE_WHEN_FULL.get()) {
 				if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()) {
-					if (alpha != 0 & ClientFeathersData.getFadeCooldown() == fadeCooldown) {
-						alpha = Math.max((alpha - 1.0f / fadeOut), 0.0f);
+					if (ClientFeathersData.getFadeCooldown() == fadeCooldown && alpha > 0) {
+						alpha = alpha <= 0.025 ? 0 : alpha - 1.0f / fadeOut;
 					}
 				} else {
-					if (alpha < 1.0f) {
-						alpha = Math.min((alpha + 1.0f / fadeIn), 1.0f);
-					}
+					alpha = alpha >= 1.0f ? 1.0f : alpha + 1.0f / fadeIn;
 				}
 			}
-
-			if (alpha == 0) return;
 
 			/*
 			 * Always render the background up to the maximum feather amount
@@ -93,6 +96,35 @@ public class FeathersHudOverlay {
 					break;
 				}
 			}
+
+
+			/*
+			 * Render overflowing feathers, if any
+			 */
+			/* // TODO FINISH OVERFLOWING CODE
+			if (ClientFeathersData.isOverflowing()) {
+				int featherLevel = (ClientFeathersData.getFeathers() - 20) / 2 + 1;
+
+				for (int i = 0; i < 10; i++) {
+					if ((i + 1 <= featherLevel)) { // TODO SUBTRACT FEATHER LEVEL BY 1
+						// Check if feather is half or full
+						int type = (i + 1 == featherLevel
+								&& ClientFeathersData.getFeathers() % 2 != 0 ? HALF_FLOW : FULL_FLOW);
+						Feathers.logger.info("Index is: " + (i + 1));
+						Feathers.logger.info("Type is: " + type);
+						Feathers.logger.info("Because " + (i + 1 == featherLevel));
+
+						int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
+
+						int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
+						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + yOffset,
+								type, cold, 9, 9, 256, 256);
+					} else {
+						break;
+					}
+				}
+			}
+			*/
 
 			/*
 			 * Only render the currently worn armor

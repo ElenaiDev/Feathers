@@ -11,6 +11,7 @@ public class ClientFeathersData {
 	private static int fadeCooldown = 0;
     private static boolean cold = false;
     private static boolean energized = false;
+	private static boolean overflowing = false;
 
     public static void setFeathers(int feathers) {
         ClientFeathersData.feathers = feathers;
@@ -52,6 +53,14 @@ public class ClientFeathersData {
 
 	public static void setCold(boolean cold) {
 		ClientFeathersData.cold = cold;
+	}
+
+	public static boolean isOverflowing() {
+		return overflowing;
+	}
+
+	public static void setOverflowing(boolean overflowing) {
+		ClientFeathersData.overflowing = overflowing;
 	}
 
 	public static int getEnduranceFeathers() {

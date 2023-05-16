@@ -1,7 +1,5 @@
 package com.elenai.feathers.event;
 
-import java.util.List;
-
 import com.elenai.feathers.Feathers;
 import com.elenai.feathers.client.ClientFeathersData;
 import com.elenai.feathers.client.gui.FeathersHudOverlay;
@@ -10,7 +8,6 @@ import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.networking.packet.RequestWeightCTSPacket;
 import com.elenai.feathers.util.ArmorHandler;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -20,11 +17,14 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 public class ClientEvents {
 
@@ -34,7 +34,7 @@ public class ClientEvents {
 	public static class ClientModBusEvents {
 		@SubscribeEvent
 		public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-			event.registerAboveAll("feathers", FeathersHudOverlay.FEATHERS);
+			event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), "feathers", FeathersHudOverlay.FEATHERS);
 		}
 	}
 
@@ -45,6 +45,7 @@ public class ClientEvents {
 		public static void clientTickEvents(ClientTickEvent event) {
 			if (event.phase == TickEvent.Phase.START) {
 				if (Minecraft.getInstance().level != null) {
+					ClientFeathersData.setOverflowing(ClientFeathersData.getFeathers() > 20);
 
 					if (ClientFeathersData.getAnimationCooldown() > 0) {// TODO: improve this animation
 						ClientFeathersData.setAnimationCooldown(ClientFeathersData.getAnimationCooldown() - 1);
