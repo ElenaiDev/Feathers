@@ -1,6 +1,7 @@
 package com.elenai.feathers.api;
 
 import com.elenai.feathers.Feathers;
+import com.elenai.feathers.attributes.FeathersAttributes;
 import com.elenai.feathers.capability.PlayerFeathers;
 import com.elenai.feathers.capability.PlayerFeathersProvider;
 import com.elenai.feathers.client.ClientFeathersData;
@@ -45,6 +46,8 @@ public class FeathersHelper {
 	 */
 	public static void setMaxFeathers(ServerPlayer player, int feathers) {
 		player.getCapability(PlayerFeathersProvider.PLAYER_FEATHERS).ifPresent(f -> {
+			if (player.getAttributeValue(FeathersAttributes.MAX_FEATHERS.get()) != feathers)
+				player.getAttribute(FeathersAttributes.MAX_FEATHERS.get()).setBaseValue(feathers);
 			f.setMaxFeathers(feathers);
 			FeathersMessages.sendToPlayer(new FeatherSyncSTCPacket(f.getFeathers(), f.getMaxFeathers(), f.getRegen(), getPlayerWeight(player), f.getEnduranceFeathers()), player);
 		});
