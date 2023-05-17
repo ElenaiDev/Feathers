@@ -61,7 +61,8 @@ public class ClientEvents {
 
 					if (FeathersClientConfig.FADE_WHEN_FULL.get()) {
 						int cooldown = ClientFeathersData.getFadeCooldown();
-						if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()) {
+						if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()
+						|| ClientFeathersData.getEnduranceFeathers() > 0) {
 							if (cooldown < FeathersClientConfig.FADE_COOLDOWN.get()) {
 								ClientFeathersData.setFadeCooldown(ClientFeathersData.getFadeCooldown() + 1);
 							}
