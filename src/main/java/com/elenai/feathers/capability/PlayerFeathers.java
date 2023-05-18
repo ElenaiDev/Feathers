@@ -86,6 +86,7 @@ public class PlayerFeathers {
 	public void setCooldown(int cooldown) {
 		this.cooldown = cooldown;
 	}
+
 	public void addCooldown(int ticks) {
 		this.cooldown = Math.min(this.cooldown + ticks, maxCooldown);
 	}
@@ -109,6 +110,7 @@ public class PlayerFeathers {
 	public void setEnduranceFeathers(int enduranceFeathers) {
 		this.enduranceFeathers = enduranceFeathers;
 	}
+
 	public void addEndurance(int feathers) {
 		this.enduranceFeathers = this.enduranceFeathers + feathers;
 	}

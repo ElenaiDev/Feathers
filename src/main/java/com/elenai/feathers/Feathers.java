@@ -9,6 +9,7 @@ import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.potion.FeathersPotions;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -21,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 public class Feathers {
 	public static final String MODID = "feathers";
 	public static final Logger logger = LogManager.getLogger(MODID);
+	public static final boolean OB_LOADED = ModList.get().isLoaded("overflowingbars");
 
 	public Feathers() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
