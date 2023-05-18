@@ -113,7 +113,7 @@ public class FeathersHelper {
 	 * Returns the given player's endurance count
 	 * 
 	 * @side server
-	 * @param player Player whose endurance is being aqcuired
+	 * @param player Player whose endurance is being acquired
 	 * @return the player's feathers
 	 */
 	public static int getEndurance(ServerPlayer player) {
@@ -204,9 +204,9 @@ public class FeathersHelper {
 	 * Decreases the inputted players feathers + endurance from their total and syncs them to the
 	 * server IF the final result is greater than the armor weight, returns whether
 	 * it is possible to or not
-	 * 
+	 * <p>
 	 * TIP: Use this method at the end of if statements when you wish to spend feathers
-	 * 
+	 * <p>
 	 * 
 	 * @side client
 	 * @param feathers
@@ -222,6 +222,7 @@ public class FeathersHelper {
 				int amount = ClientFeathersData.getEnduranceFeathers()-feathers;
 				if(ClientFeathersData.getEnduranceFeathers() > 0) {
 					ClientFeathersData.setEnduranceFeathers(Math.max(0, amount));
+					ClientFeathersData.setFadeCooldown(0);
 				}
 				if(amount < 0) {
 					ClientFeathersData.setFeathers(ClientFeathersData.getFeathers() + amount);
@@ -236,11 +237,11 @@ public class FeathersHelper {
 	/**
 	 * Gets the weight of the given armor item, minus the input lightweight level, if the item has a weight in
 	 * the config, returns that value, if not it returns the item's defence rating
-	 * 
+	 * <p>
 	 * This method is for use when sending items as packets to the server
 	 * 
 	 * @side server
-	 * @param item The armor who's weight you wish to get
+	 * @param item The armor whose weight you wish to get
 	 * @return the armor's weight
 	 */
 	public static int getArmorWeight(Item item, int lightweightLevel) {
@@ -258,7 +259,7 @@ public class FeathersHelper {
 	 * the config, returns that value, if not it returns the item's defence rating
 	 * 
 	 * @side server
-	 * @param itemStack The armor who's weight you wish to get
+	 * @param itemStack The armor whose weight you wish to get
 	 * @return the armor's weight
 	 */
 	public static int getArmorWeightByStack(ItemStack itemStack) {
