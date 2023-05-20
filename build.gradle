@@ -87,11 +87,14 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-
+    maven { // CurseForge
+        url "https://www.cursemaven.com"
+    }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.1.34'
+    compileOnly("curse.maven:overflowing-bars-852662:4515133")
 }
 
 

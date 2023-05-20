@@ -13,7 +13,7 @@ public class FeathersCommonConfig {
 	public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 	public static final ForgeConfigSpec SPEC;
 
-	public static final ForgeConfigSpec.ConfigValue<Integer> REGEN_SPEED;
+	public static final ForgeConfigSpec.ConfigValue<Integer> COOLDOWN;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_ARMOR_WEIGHTS;
 	public static final ForgeConfigSpec.ConfigValue<List<? extends String>> ARMOR_WEIGHTS;
 	public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_FROST_EFFECTS;
@@ -24,10 +24,10 @@ public class FeathersCommonConfig {
 	static {
 		BUILDER.push("Feathers' Config");
 
-		REGEN_SPEED = BUILDER.comment("How many ticks it takes to regenerate half a feather.")
-				.define("Regeneration Speed", 40);
+		COOLDOWN = BUILDER.comment("How many ticks it takes to regenerate half a feather.")
+				.define("Feathers Cooldown", 40);
 
-		/**
+		/*
 		 * Add all current armor types on config creation
 		 */
 		ForgeRegistries.ITEMS.forEach(i -> {
