@@ -50,9 +50,8 @@ public class FeathersHudOverlay {
 		RenderSystem.setShaderTexture(0, ICONS);
 
 		if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements()) {
-		/*
 			/*
-			* If enabled, decrease the overlay's alpha value relative to the fade in/out duration
+			 * If enabled, decrease the overlay's alpha value relative to the fade in/out duration
 			 */
 			if (FeathersClientConfig.FADE_WHEN_FULL.get()) {
 				if (ClientFeathersData.getFeathers() == ClientFeathersData.getMaxFeathers()) {
@@ -98,6 +97,29 @@ public class FeathersHudOverlay {
 			}
 
 			/*
+			 * Only render the currently worn armor
+			 */
+			//if (Math.ceil(ClientFeathersData.getFeathers() / 20.0d) <= Math.ceil(ClientFeathersData.getWeight() / 20.0d)) {
+			for (int i = 0; i < 10; i++) {
+				if ((i + 1 <= Math.ceil((double) ClientFeathersData.getWeight() / 2.0d))
+						&& (i + 1 <= Math.ceil((double) ClientFeathersData.getFeathers() / 2.0d))) {
+					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
+
+					// Check if feather is half or full
+					int type = ((i + 1 == Math.ceil((double) ClientFeathersData.getWeight() / 2.0d)
+							&& (ClientFeathersData.getWeight() % 2 != 0)) ? HALF_ARMORED : ARMORED);
+
+					int lowerFeathers = (i >= Math.floor((double) ClientFeathersData.getFeathers() / 2.0d)) ? 9 : 0;
+
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+							type, lowerFeathers, 9, 9, 256, 256);
+				} else {
+					break;
+				}
+			}
+			//}
+
+			/*
 			 * Render feathers past 20 in a different color
 			 */
 			if (ClientFeathersData.isOverflowing()) {
@@ -110,29 +132,6 @@ public class FeathersHudOverlay {
 						int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
 						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + yOffset,
 								type, cold, 9, 9, 256, 256);
-					} else {
-						break;
-					}
-				}
-			}
-
-			/*
-			 * Only render the currently worn armor
-			 */
-			if (Math.ceil(ClientFeathersData.getFeathers() / 20.0d) <= Math.ceil(ClientFeathersData.getWeight() / 20.0d)) {
-				for (int i = 0; i < 10; i++) {
-					if ((i + 1 <= Math.ceil((double) ClientFeathersData.getWeight() / 2.0d))
-							&& (i + 1 <= Math.ceil((double) ClientFeathersData.getFeathers() / 2.0d))) {
-						int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-
-						// Check if feather is half or full
-						int type = ((i + 1 == Math.ceil((double) ClientFeathersData.getWeight() / 2.0d)
-								&& (ClientFeathersData.getWeight() % 2 != 0)) ? HALF_ARMORED : ARMORED);
-
-						int lowerFeathers = (i >= Math.floor((double) ClientFeathersData.getFeathers() / 2.0d)) ? 9 : 0;
-
-						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
-								type, lowerFeathers, 9, 9, 256, 256);
 					} else {
 						break;
 					}

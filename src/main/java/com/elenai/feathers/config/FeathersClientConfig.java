@@ -24,7 +24,7 @@ public class FeathersClientConfig {
 		BUILDER.push("Feathers' Config");
 
 		FADE_WHEN_FULL = BUILDER.comment("Fade the HUD overlay if the feathers are full.")
-				.define("Fade When Full", true);
+				.define("Fade When Full", false);
 
 		FADE_COOLDOWN = BUILDER.comment("Duration (in ticks) before the HUD overlay fades.")
 				.define("Fade Cooldown", 60);
@@ -47,8 +47,8 @@ public class FeathersClientConfig {
 		VISUAL_WEIGHTS = BUILDER.comment("Whether armor weights are displayed as icons (true) or text (false) when hovering over an item")
 				.define("Display Weight As Icons", false);
 		
-		AFFECTED_BY_RIGHT_HEIGHT = BUILDER.comment("Whether armor weights are affected by icons on the right side of the HUD.")
-				.define("Weight Affected by Right Side Icons", true);
+		AFFECTED_BY_RIGHT_HEIGHT = BUILDER.comment("Whether feather icons are affected by icons on the right side of the HUD.")
+				.define("Feathers Affected by Right Side Icons", true);
 		
 		X_OFFSET = BUILDER.comment("How far left or right you want the feathers to be")
 				.define("HUD X Offset", 0);
