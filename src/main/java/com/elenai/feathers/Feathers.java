@@ -7,6 +7,9 @@ import com.elenai.feathers.effect.FeathersEffects;
 import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
 import com.elenai.feathers.potion.FeathersPotions;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -40,5 +43,21 @@ public class Feathers {
 
 	private void commonSetup(FMLCommonSetupEvent event) {
 		event.enqueueWork(FeathersMessages::register);
+		registerBrewingRecipes();
+	}
+
+	private void registerBrewingRecipes() {
+		// Cold
+		PotionBrewing.addMix(Potions.AWKWARD, Items.SNOWBALL, FeathersPotions.COLD_POTION.get());
+
+		// Endurance
+		PotionBrewing.addMix(Potions.AWKWARD, Items.FEATHER, FeathersPotions.ENDURANCE_POTION.get());
+		PotionBrewing.addMix(FeathersPotions.ENDURANCE_POTION.get(), Items.REDSTONE, FeathersPotions.LONG_ENDURANCE_POTION.get());
+		PotionBrewing.addMix(FeathersPotions.ENDURANCE_POTION.get(), Items.GLOWSTONE_DUST, FeathersPotions.STRONG_ENDURANCE_POTION.get());
+
+		// Energized
+		PotionBrewing.addMix(Potions.AWKWARD, Items.RAW_COPPER, FeathersPotions.ENERGIZED_POTION.get());
+		PotionBrewing.addMix(FeathersPotions.ENERGIZED_POTION.get(), Items.REDSTONE, FeathersPotions.LONG_ENERGIZED_POTION.get());
+		PotionBrewing.addMix(FeathersPotions.ENERGIZED_POTION.get(), Items.GLOWSTONE_DUST, FeathersPotions.STRONG_ENERGIZED_POTION.get());
 	}
 }
