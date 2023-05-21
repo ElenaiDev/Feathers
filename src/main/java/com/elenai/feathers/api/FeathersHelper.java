@@ -239,14 +239,15 @@ public class FeathersHelper {
 	 * the config, returns that value, if not it returns the item's defence rating
 	 * <p>
 	 * This method is for use when sending items as packets to the server
-	 * 
+	 * </p>
+	 *
 	 * @side server
-	 * @param item The armor whose weight you wish to get
+	 * @param item The armor who's weight you wish to get
 	 * @return the armor's weight
 	 */
-	public static int getArmorWeight(Item item, int lightweightLevel) {
-		if (item instanceof ArmorItem armor) { //TODO: this
-			return Math.max(ArmorHandler.getArmorWeight(armor) - lightweightLevel, 0);
+	public static int getArmorWeight(Item item, int lightweightLevel, int heavyLevel) {
+		if (item instanceof ArmorItem armor) {
+			return Math.max(ArmorHandler.getArmorWeight(armor) - lightweightLevel + (heavyLevel * ArmorHandler.getArmorWeight(armor)), 0);
 		} else if (item == Items.AIR) {
 			return 0;
 		}
@@ -257,14 +258,16 @@ public class FeathersHelper {
 	/**
 	 * Gets the weight of the given armor item stack, if the item has a weight in
 	 * the config, returns that value, if not it returns the item's defence rating
-	 * 
+	 *
 	 * @side server
-	 * @param itemStack The armor whose weight you wish to get
+	 * @param itemStack The armor who's weight you wish to get
 	 * @return the armor's weight
 	 */
 	public static int getArmorWeightByStack(ItemStack itemStack) {
-		if (itemStack.getItem() instanceof ArmorItem armor) { //TODO: this
-			return Math.max(ArmorHandler.getArmorWeight(armor) - ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), itemStack), 0);
+		if (itemStack.getItem() instanceof ArmorItem armor) {
+			return Math.max(ArmorHandler.getArmorWeight(armor) -
+					ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), itemStack) +
+					(ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.HEAVY.get(), itemStack) * ArmorHandler.getArmorWeight(armor)), 0);
 		} else if (itemStack.getItem() == Items.AIR) {
 			return 0;
 		}
@@ -288,7 +291,7 @@ public class FeathersHelper {
 		}
 		return weight;
 	}
-	
+
 	/**
 	 * Returns the given player's coldness
 	 * 

@@ -80,7 +80,8 @@ public class ClientEvents {
 					// fonts
 
 					FeathersMessages.sendToServer(new RequestWeightCTSPacket(Item.getId(event.getItemStack().getItem()),
-							ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), event.getItemStack())));
+							ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.LIGHTWEIGHT.get(), event.getItemStack()),
+							ArmorHandler.getItemEnchantmentLevel(FeathersEnchantments.HEAVY.get(), event.getItemStack())));
 					if (currentWeight > 0) {
 						StringBuilder s = new StringBuilder();
 						List<Component> tooltip = event.getToolTip();

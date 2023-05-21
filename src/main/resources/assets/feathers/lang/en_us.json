@@ -41,6 +41,7 @@
 	"item.minecraft.tipped_arrow.effect.long_energized_potion": "Arrow of Energy",
 
 	"enchantment.feathers.lightweight": "Lightweight",
+	"enchantment.feathers.heavy": "Curse of Heaviness",
 
 	"text.feathers.tooltip": "+%s Weight"
 }
