@@ -6,7 +6,7 @@ modId="feathers"
 version="${file.jarVersion}"
 displayName="Feathers"
 logoFile="feathers.png"
-credits="Thanks for everyone who has supported me!"
+credits="BookerCatch made some amazing changes!"
 authors="Elenai"
 description='''
 Feathers is a stamina system for Minecraft, it adds a set of blue feathers to the hotbar to be spent by other mods, as well as an armor weight system to the game.
