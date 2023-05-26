@@ -45,9 +45,9 @@ public class FeathersBarWrapper {
             tfar.classicbar.util.ModUtils.drawTexturedModalRect(stack, f, yStart + 1, 1, 10, tfar.classicbar.util.ModUtils.getWidth(feathers, maxFeathers) + 1, 7);
 
             // Then do the same for Armored Feathers
-            double j = xStart + 78 - tfar.classicbar.util.ModUtils.getWidth(ClientFeathersData.getWeight(), 20);
+            double j = xStart + 78 - tfar.classicbar.util.ModUtils.getWidth(ClientFeathersData.getWeight(), Math.max(20, FeathersHelper.getMaxFeathers()));
             tfar.classicbar.util.ColorUtils.hex2Color("#b8b9c4").color2Gl();
-            tfar.classicbar.util.ModUtils.drawTexturedModalRect(stack, j, yStart + 1, 1, 10, tfar.classicbar.util.ModUtils.getWidth(ClientFeathersData.getWeight(), 20) + 1, 7);
+            tfar.classicbar.util.ModUtils.drawTexturedModalRect(stack, j, yStart + 1, 1, 10, tfar.classicbar.util.ModUtils.getWidth(ClientFeathersData.getWeight(), Math.max(20, FeathersHelper.getMaxFeathers())) + 1, 7);
 
         }
 
