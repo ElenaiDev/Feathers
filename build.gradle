@@ -95,6 +95,7 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.1.34'
     compileOnly("curse.maven:overflowing-bars-852662:4515133")
+    implementation fg.deobf("curse.maven:classic-bars-317642:4430475")
 }
 
 

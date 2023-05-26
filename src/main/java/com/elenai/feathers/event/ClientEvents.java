@@ -3,6 +3,7 @@ package com.elenai.feathers.event;
 import com.elenai.feathers.Feathers;
 import com.elenai.feathers.client.ClientFeathersData;
 import com.elenai.feathers.client.gui.FeathersHudOverlay;
+import com.elenai.feathers.compat.ClassicBarsCompat;
 import com.elenai.feathers.config.FeathersClientConfig;
 import com.elenai.feathers.enchantment.FeathersEnchantments;
 import com.elenai.feathers.networking.FeathersMessages;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
@@ -34,7 +36,11 @@ public class ClientEvents {
 	public static class ClientModBusEvents {
 		@SubscribeEvent
 		public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-			event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), "feathers", FeathersHudOverlay.FEATHERS);
+			if(!ModList.get().isLoaded("classicbar")) {
+				event.registerAbove(VanillaGuiOverlay.FOOD_LEVEL.id(), "feathers", FeathersHudOverlay.FEATHERS);
+			} else {
+				ClassicBarsCompat.registerClassicBarOverlay();
+			}
 		}
 	}
 
