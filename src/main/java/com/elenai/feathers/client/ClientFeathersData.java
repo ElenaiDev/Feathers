@@ -2,12 +2,16 @@ package com.elenai.feathers.client;
 
 public class ClientFeathersData {
     private static int feathers = 20;
+	private static int maxFeathers = 20;
+	private static int regenRate = 1;
     private static int previousFeathers = feathers;
     private static int enduranceFeathers = 0;
     private static int weight = 20;
     private static int animationCooldown = 0;
+	private static int fadeCooldown = 0;
     private static boolean cold = false;
     private static boolean energized = false;
+	private static boolean overflowing = false;
 
     public static void setFeathers(int feathers) {
         ClientFeathersData.feathers = feathers;
@@ -17,6 +21,14 @@ public class ClientFeathersData {
         return ClientFeathersData.feathers;
     }
 
+	public static int getRegenRate() {return ClientFeathersData.regenRate; }
+
+	public static void setRegenRate(int ticks) {ClientFeathersData.regenRate = ticks; }
+
+	public static void setMaxFeathers(int feathers) { ClientFeathersData.maxFeathers = feathers; }
+
+	public static int getMaxFeathers() { return ClientFeathersData.maxFeathers; }
+
 	public static void setWeight(int weight) {
 		ClientFeathersData.weight = weight;
 	}
@@ -25,13 +37,15 @@ public class ClientFeathersData {
 		return ClientFeathersData.weight;
 	}
 
-	public static int getAnimationCooldown() {
-		return animationCooldown;
-	}
+	public static int getAnimationCooldown() { return animationCooldown; }
 
 	public static void setAnimationCooldown(int i) {
 		ClientFeathersData.animationCooldown = i;
 	}
+
+	public static int getFadeCooldown() { return fadeCooldown; }
+
+	public static void setFadeCooldown(int i) { ClientFeathersData.fadeCooldown = i; }
 
 	public static boolean isCold() {
 		return cold;
@@ -39,6 +53,14 @@ public class ClientFeathersData {
 
 	public static void setCold(boolean cold) {
 		ClientFeathersData.cold = cold;
+	}
+
+	public static boolean isOverflowing() {
+		return overflowing;
+	}
+
+	public static void setOverflowing(boolean overflowing) {
+		ClientFeathersData.overflowing = overflowing;
 	}
 
 	public static int getEnduranceFeathers() {

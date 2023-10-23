@@ -33,7 +33,7 @@ public class ColdSyncSTCPacket {
 			ClientFeathersData.setCold(cold);
 			if(ClientFeathersData.isCold() && FeathersClientConfig.FROST_SOUND.get()) {
 				Minecraft instance = Minecraft.getInstance();
-				instance.level.playLocalSound(instance.player.blockPosition(), new SoundEvent(new ResourceLocation("entity.player.hurt_freeze")),
+				instance.level.playLocalSound(instance.player.blockPosition(), SoundEvent.createVariableRangeEvent(new ResourceLocation("entity.player.hurt_freeze")),
 						SoundSource.PLAYERS, 1f, instance.level.random.nextFloat(), false);
 			}
 		});

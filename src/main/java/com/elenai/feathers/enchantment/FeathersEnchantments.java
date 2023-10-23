@@ -19,6 +19,10 @@ public class FeathersEnchantments {
 			() -> new LightweightEnchantment(Rarity.UNCOMMON, EnchantmentCategory.ARMOR, new EquipmentSlot[] {
 					EquipmentSlot.CHEST, EquipmentSlot.FEET, EquipmentSlot.HEAD, EquipmentSlot.LEGS }));
 
+	public static RegistryObject<Enchantment> HEAVY = ENCHANTMENTS.register("heavy",
+			() -> new HeavyCurse(Rarity.RARE, EnchantmentCategory.ARMOR, new EquipmentSlot[] {
+					EquipmentSlot.CHEST, EquipmentSlot.FEET, EquipmentSlot.HEAD, EquipmentSlot.LEGS }));
+
 	public static void register(IEventBus eventBus) {
 		ENCHANTMENTS.register(eventBus);
 	}
