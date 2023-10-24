@@ -20,6 +20,8 @@ public class FeathersClientConfig {
 	public static final ForgeConfigSpec.ConfigValue<Integer> FADE_OUT_COOLDOWN;
 	public static final ForgeConfigSpec.ConfigValue<Integer> FADE_COOLDOWN;
 
+	public static final ForgeConfigSpec.ConfigValue<Integer> Y_OFFSET_RIDING;
+
 	static {
 		BUILDER.push("Feathers' Config");
 
@@ -55,6 +57,9 @@ public class FeathersClientConfig {
 		
 		Y_OFFSET = BUILDER.comment("How far up or down you want the feathers to be. TIP: use this for compatibility with mods that add other bars such as thirst")
 				.define("HUD Y Offset", 0);
+
+		Y_OFFSET_RIDING = BUILDER.comment("How far up or down you want the feathers to be when riding a horse.")
+				.define("HUD Y Offset When Riding", 0);
 		
 		BUILDER.pop();
 		SPEC = BUILDER.build();
