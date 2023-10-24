@@ -37,12 +37,14 @@ public class FeathersHudOverlay {
 		int fadeOut = FeathersClientConfig.FADE_OUT_COOLDOWN.get();
 		int xOffset = FeathersClientConfig.X_OFFSET.get();
 		int yOffset = FeathersClientConfig.Y_OFFSET.get();
+		int yRiding = FeathersClientConfig.Y_OFFSET_RIDING.get();
 		Minecraft minecraft = Minecraft.getInstance();
 
 		int x = screenWidth / 2;
 		int y = screenHeight;
 
 		int rightOffset = FeathersClientConfig.AFFECTED_BY_RIGHT_HEIGHT.get() ? gui.rightHeight : 0;
+		int topOffset = minecraft.player.isRidingJumpable() ? yRiding : yOffset;
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.enableBlend();
@@ -71,7 +73,7 @@ public class FeathersHudOverlay {
 				if ((i + 1 <= Math.ceil((double) ClientFeathersData.getMaxFeathers() / 2.0d))) {
 					int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
 					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset, NONE,
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + topOffset, NONE,
 							cold, 9, 9, 256, 256);
 				}
 			}
@@ -89,7 +91,7 @@ public class FeathersHudOverlay {
 					int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
 
 					int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + yOffset,
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + topOffset,
 							type, cold, 9, 9, 256, 256);
 				} else {
 					break;
@@ -111,7 +113,7 @@ public class FeathersHudOverlay {
 
 					int lowerFeathers = (i >= Math.floor((double) ClientFeathersData.getFeathers() / 2.0d)) ? 9 : 0;
 
-					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+					GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + topOffset,
 							type, lowerFeathers, 9, 9, 256, 256);
 				} else {
 					break;
@@ -130,7 +132,7 @@ public class FeathersHudOverlay {
 								&& ClientFeathersData.getFeathers() % 2 != 0 ? HALF_FLOW : FULL_FLOW);
 						int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
 						int cold = ((ClientFeathersData.isCold()) ? 18 : 0);
-						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + yOffset,
+						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y- rightOffset - height + topOffset,
 								type, cold, 9, 9, 256, 256);
 					} else {
 						break;
@@ -146,7 +148,7 @@ public class FeathersHudOverlay {
 						|| ClientFeathersData.getAnimationCooldown() == 10) {
 					if ((i + 1 <= Math.ceil((double) ClientFeathersData.getMaxFeathers() / 2.0d))) {
 						int height = (k > i * 10 && k < (i + 1) * 10) ? 2 : 0;
-						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + yOffset,
+						GuiComponent.blit(poseStack, x + 81 - (i * 8) + xOffset, y - rightOffset - height + topOffset,
 								NONE, 9, 9, 9, 256, 256);
 					}
 				}
@@ -183,7 +185,7 @@ public class FeathersHudOverlay {
 								&& (ClientFeathersData.getEnduranceFeathers() % 2 != 0)) ? HALF : FULL);
 
 						GuiComponent.blit(poseStack, x + 81 - (j * 8) + xOffset,
-								y /*- 58*/ - rightOffset + yOffset - ((i) * 10), type, 9, 9, 9, 256, 256);
+								y /*- 58*/ - rightOffset + topOffset - ((i) * 10), type, 9, 9, 9, 256, 256);
 					} else {
 						break;
 					}
@@ -194,7 +196,7 @@ public class FeathersHudOverlay {
 			}
 
 			if (Feathers.OB_LOADED) {
-				RowCountRenderer.drawBarRowCount(poseStack, x + 100 + xOffset, y - rightOffset + 10 + yOffset, ClientFeathersData.getFeathers(), true, minecraft.font);
+				RowCountRenderer.drawBarRowCount(poseStack, x + 100 + xOffset, y - rightOffset + 10 + topOffset, ClientFeathersData.getFeathers(), true, minecraft.font);
 			}
 
 		}
