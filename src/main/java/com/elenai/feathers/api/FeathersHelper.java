@@ -270,7 +270,6 @@ public class FeathersHelper {
 		} else if (itemStack.getItem() == Items.AIR) {
 			return 0;
 		}
-		Feathers.logger.warn("Attempted to calculate weight of non armor item: " + itemStack.getDescriptionId());
 		return 0;
 	}
 
